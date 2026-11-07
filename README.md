@@ -65,7 +65,7 @@ your-project/
 Navigate to your project root and run:
 ```bash
 # Clone the kit
-git clone https://github.com/YOUR_USERNAME/agent-os-kit.git /tmp/agent-os-kit
+git clone https://github.com/ayushraj61/agent-os-kit.git /tmp/agent-os-kit
 
 # Run the installer pointing to your repo
 bash /tmp/agent-os-kit/install.sh .
@@ -106,3 +106,4 @@ After losing two days to a silent worker container configuration bug that no pro
 ## License
 
 MIT License © 2026 Ayush Raj. Free to use, adapt, and build upon.
+
