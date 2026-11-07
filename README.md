@@ -1,6 +1,6 @@
 # Production Agent OS 🛡️
 > **The Anti-Vibe-Coding Framework for AI Agents.**  
-> Drop-in governance, spec-driven architecture, and terminal guardrails to build production backends with Claude Code, Cursor, and AI agents—without breaking your codebase.
+> Drop-in governance, spec-driven architecture, and terminal guardrails to build reliable backends with Claude Code, Cursor, and AI agents—without breaking your codebase.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Engine: Claude Code / Codex / Antigravity](https://img.shields.io/badge/Agent-Claude%20Code%20%7C%20Codex%20%7C%20Cursor-orange.svg)](#)
@@ -12,8 +12,8 @@
 Right now, everyone is talking about "vibe coding"—throwing conversational prompts at an LLM and hoping a production-ready system appears.
 
 That works for weekend toy demos or static landing pages. But on backend infrastructure, vibe coding is a disaster:
-- **Context Rot:** After 20 minutes of chatting, the agent forgets earlier decisions and hallucinates database columns or API parameters that don't exist.
-- **Silent Degradation:** When a test fails, the AI quietly modifies assertions or deletes checks just to get a green tick instead of fixing the broken application logic.
+- **Context Rot:** Across extended sessions, unanchored agents suffer context drift—forgetting architectural constraints and hallucinating database columns or API parameters that don't exist.
+- **Silent Weakening:** When tests fail, agents often modify assertions or delete checks just to get a green tick instead of fixing the broken application logic.
 - **Hidden Invariants:** Beginners often don't know to ask for idempotency keys, race condition guards, or atomic counters—and the AI won't volunteer them unless forced.
 - **Zero Accountability:** When an asynchronous worker silently drops jobs at 2 AM due to an environment mismatch, the AI isn't on call—**you are**.
 
@@ -29,21 +29,20 @@ After spending nearly two days tracking down a silent worker container configura
 
 ---
 
-## The 8-Step Coder Workflow
+## The 6-Step Implementation Loop
 
-Every backend feature built by the agent must strictly follow this closed execution loop:
+Every backend feature built by the agent follows this closed execution loop:
 
 ```mermaid
 flowchart TD
-    A["1. Check TASKS.md<br/>(Confirm next unblocked task)"] --> B["2. Read/Write Spec<br/>(specs/feature.md before code)"]
-    B --> C["3. Implement Minimal Code<br/>(Within schema boundaries)"]
-    C --> D["4. Test & Collect Evidence<br/>(Execute in terminal)"]
+    A["1. Scope<br/>(Define behavior & observable criteria)"] --> B["2. Plan<br/>(Write spec for contracts/data/auth; inline for small fixes)"]
+    B --> C["3. Build<br/>(Implement complete slice using real interfaces)"]
+    C --> D["4. Verify<br/>(Run relevant checks & failure paths)"]
     D --> E{"Tests Green?"}
-    E -- No --> F["Fix Code & Re-test<br/>(Never weaken tests!)"]
+    E -- No --> F["Fix Code & Re-verify<br/>(Never weaken tests!)"]
     F --> D
-    E -- Yes --> G["5. Record in TESTING.md<br/>('No Evidence, No Done')"]
-    G --> H["6. Mark Task Done<br/>([x] in TASKS.md)"]
-    H --> I["7. Append to LOG.md<br/>(Token-efficient rolling log)"]
+    E -- Yes --> G["5. Record<br/>(Capture CLI commands & results in TESTING.md)"]
+    G --> H["6. Report & Update<br/>(Mark DONE in TASKS.md & log work in LOG.md)"]
 ```
 
 ---
@@ -52,11 +51,11 @@ flowchart TD
 
 | Principle | Vibe Coding | Production Agent OS |
 | :--- | :--- | :--- |
-| **Architecture** | Improvised on the fly from chat prompts | Spec-first (`.agent/specs/`) with locked schemas |
+| **Architecture** | Improvised on the fly from chat prompts | Spec-first (`.agent/specs/`) for significant changes; inline plan for small fixes |
 | **Requirements** | Only what the user remembers to ask | Proactively investigates hidden failure modes (races, idempotency, auth) |
-| **Testing** | "It ran once on localhost" | Immutable tests; agent must fix code to pass, never edit tests |
-| **Context Window** | Flooded with entire files until it hallucinates | Scoped reading: active tasks + last 20 lines of rolling log |
-| **Multi-Agent** | Locked to a single proprietary chat UI | Universal entry points (`CLAUDE.md`, `AGENTS.md`, `SKILL.md`) |
+| **Testing** | "It ran once on localhost" | Never weaken tests; fixes must satisfy the contract |
+| **Context Window** | Flooded with entire files until it hallucinates | Scoped reading: active tasks + relevant specs + last 20 lines of log |
+| **Agent Support** | Locked to a single proprietary chat UI | Ready for Claude Code (`CLAUDE.md`), Cursor/Codex (`AGENTS.md`), and skills (`SKILL.md`) |
 
 ---
 
@@ -72,7 +71,7 @@ Production Agent OS equips the agent with a proactive requirement discovery matr
 | **Payments & Webhooks** | Duplicate delivery, provider retries, webhook signature verification | Replay callback payload in sandbox; verify idempotent no-op. |
 | **Seats, Credits, Quotas** | Race conditions between concurrent requests | Concurrent requests preserve atomic database limits. |
 | **Background Workers** | Crash after side effect, poison job handling, at-least-once delivery | Simulate worker crash mid-task; confirm outbox/retry recovery. |
-| **Schema Migrations** | Staged deployment compatibility, zero downtime | Test rollback downgrade script before applying to production. |
+| **Schema Migrations** | Staged deployment compatibility, zero downtime | Plan forward compatibility; never assume a downgrade restores modified data. |
 
 ---
 
@@ -86,7 +85,7 @@ git clone https://github.com/ayushraj61/agent-os-kit.git
 bash agent-os-kit/install.sh /path/to/your-project
 ```
 
-The installer safely installs `CLAUDE.md`, `AGENTS.md`, and the `.agent/` governance structure into your repository without overwriting existing work.
+The installer safely installs `CLAUDE.md`, `AGENTS.md`, and the `.agent/` governance structure into your repository. Existing instruction files and project state are preserved.
 
 ### Option 2: Use as an Agent Skill
 Point your AI agent directly to `SKILL.md` via your agent's skill loader.
@@ -116,29 +115,29 @@ your-project/
     ├── guides/
     │   └── backend-delivery.md # Proactive failure discovery & beginner delivery guide
     └── specs/
-        ├── README.md         # 'No Spec, No Implementation' rule
+        ├── README.md         # Spec conventions ('No Spec, No Implementation' for new contracts)
         └── 00_template_spec.md # Feature spec template (Goals, Invariants, Edge Cases)
 ```
 
 ---
 
-## Rigorous Verification & Benchmarks
+## Verification & Evaluations
 
-Unlike typical prompt lists, Production Agent OS is tested and verifiable:
-
-### 1. Automated Installer Suite
-The installer is covered by automated Python unit tests ensuring safe execution against directory collisions, symlink attacks, and path handling:
+### 1. Automated Installer Test Suite
+The installer is covered by automated Python unit tests ensuring safe execution against directory collisions, existing instruction preservation, and symlink security:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-### 2. Behavioral Agent Evaluations
-We provide a standardized evaluation framework in [`evaluations/README.md`](evaluations/README.md) to benchmark AI agents across 7 high-risk backend scenarios:
-- Multi-tenant workspace data isolation
-- Duplicate payment callback idempotency
-- Concurrency race conditions on limited inventory
+### 2. Standardized Behavioral Evaluation Scenarios
+In [`evaluations/README.md`](evaluations/README.md), we define 7 repeatable evaluation scenarios to test whether an AI agent demonstrates real engineering judgment:
+- Multi-tenant workspace data isolation under direct ID tampering
+- Duplicate payment callback idempotency & state protection
+- Concurrency race conditions on limited inventory / seat reservations
 - Cookie-based authentication & client CORS boundaries
-- Resilient recovery under database outages
+- Resilient recovery and reporting under database outages
+- Scoped list and search pagination memory limits
+- Localized maintenance fixes without unnecessary ceremony
 
 ---
 
