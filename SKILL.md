@@ -1,11 +1,11 @@
 ---
 name: production-agent-os
-description: Plan, implement, and verify production backend features in new or existing products, including APIs, databases, authorization, workers, and integrations. Use for backend development and reliability work; not for unrelated frontend or documentation tasks.
+description: Guide developers from product requirements to verified backends using APIs, databases, authorization, workers, and integrations. Use for backend planning, implementation, and release preparation, including related client integration; not for standalone visual design.
 ---
 
 # Production Agent OS
 
-Help developers turn product requirements into reliable backends. Preserve the existing stack, working behavior, and the user's scope. Scale planning and verification to the risk; do not require a full ceremony for a small fix.
+Help developers, including those with limited backend experience, turn product requirements into reliable backends. Supply engineering judgment instead of assuming the user knows every requirement to request. Preserve the existing stack, working behavior, and the user's scope. Scale planning and verification to the risk; do not require a full ceremony for a small fix.
 
 ## Start with the actual project
 
@@ -15,14 +15,20 @@ If `.agent/` exists, read active tasks and relevant architecture/spec sections, 
 
 Establish the product operation this backend must support, its callers, sensitive data, access rules, and observable success criteria. Ask only for decisions that block safe progress. Record assumptions and keep independent work moving.
 
+## Guide the developer, not just the code
+
+For a new product, a broad feature, or a developer who needs backend guidance, use [guided backend delivery](template/.agent/guides/backend-delivery.md). Translate product language into backend contracts, recommend suitable defaults with reasons, and uncover relevant access, data-loss, duplicate-work, and recovery risks. Ask the user for consequential product decisions, not an architecture exam.
+
+Deliver a small complete operation before expanding infrastructure. Include the frontend–backend contract and error/authentication flows when affected, while keeping visual design outside the main focus. Explain progress as implemented, working locally, verified for a stated scope, or ready for a stated release; show evidence and gaps for each claim.
+
 ## One implementation loop
 
-1. **Scope:** Identify the requested task, current behavior, acceptance criteria, and affected contracts. The current user request can supersede stale task ordering; reconcile the tracker.
+1. **Scope:** Identify the requested task, current behavior, acceptance criteria, and affected contracts. Identify relevant hidden requirements using the operation/failure prompts in the delivery guide; separate necessary safeguards from optional future work. The current user request can supersede stale task ordering; reconcile the tracker.
 2. **Plan:** For new contracts, persistence changes, or meaningful authorization, concurrency, or failure risks, write a short spec using [the spec template](template/.agent/specs/00_template_spec.md). A localized fix can use an inline plan. Use impact rather than file count.
 3. **Build:** Implement a small complete slice using real repository interfaces. Handle the relevant failure paths from [backend engineering guidance](references/backend.md). Read only the relevant sections.
 4. **Verify:** Run relevant checks, including negative cases and integration boundaries. Inspect failures before changing code or tests. For release work, use [release readiness](references/release.md).
 5. **Record:** Capture the exact commands, environment, observed results, and remaining limits. Never fabricate evidence. A blocked check remains blocked; distinguish implementation complete from verified or release ready.
-6. **Report:** Update existing task/log files concisely and explain the resulting behavior, verification, and unresolved risks. Mark done only when acceptance criteria are demonstrated; report partial progress honestly.
+6. **Report:** Update existing task/log files concisely and explain what works, how to try it, what was verified, and what remains before real users. Include the practical consequence and next action for significant gaps. Mark done only when acceptance criteria are demonstrated; report partial progress honestly.
 
 ## Decision and permission boundaries
 

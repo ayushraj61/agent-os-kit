@@ -6,14 +6,20 @@ Follow the repository's instructions and the user's current authorized task. The
 
 Inspect working changes, actual interfaces, schemas, manifests, tests, and deployment configuration. Read active tasks, relevant architecture/spec sections, and the last 20 lines of LOG.md. Preserve unrelated edits. For an uninitialized project, identify the backend's callers, core operation, data, access rules, and success criteria before selecting infrastructure. Leave unknowns explicit; do not assume a queue or multi-tenant model.
 
+## Guide less experienced developers
+
+For product ideas and substantial features, read [guided backend delivery](guides/backend-delivery.md). Ask plain-language questions about behavior and ownership, recommend appropriate technical choices, and identify relevant failure/abuse paths the user may not know to request. Keep consequential product decisions explicit. Use the relevant sections only for maintenance tasks.
+
+Deliver one useful backend operation with its access rules, persistence, and failure checks before expanding layers or infrastructure. Include client contracts and authentication/error handling when affected; frontend visual design is secondary and requires its own scope.
+
 ## Build and verify
 
-1. Define the requested behavior and observable acceptance criteria. Reconcile stale task ordering with the current user request.
+1. Define the requested behavior and observable acceptance criteria. Investigate relevant hidden requirements; distinguish necessary safeguards, blocking decisions, and optional later improvements. Reconcile stale task ordering with the current user request.
 2. Write a short spec for new contracts, persistence changes, or meaningful authorization, concurrency, and failure risks. A localized fix may use an inline plan regardless of file count.
 3. Implement a complete small slice using existing patterns. Consider validation, authorization, isolation, retries, concurrency, timeouts, and recovery where relevant.
 4. Run relevant checks and inspect failures. Cover negative cases at affected boundaries. Never weaken tests to hide failures; explain legitimate test corrections against the intended contract.
 5. Record actual commands, environment, results, and limitations in TESTING.md. Unrun checks are unverified. Do not copy example results as evidence.
-6. Update task status and a concise log entry. Mark done only with demonstrated acceptance criteria. Distinguish implemented, verified, and ready for release.
+6. Update task status and a concise log entry. Mark done only with demonstrated acceptance criteria. Distinguish implemented, works locally, verified for the stated scope, and ready for the intended release using the evidence levels in the delivery guide. Explain how to try the feature and the consequence/next action for remaining gaps.
 
 Proceed with routine edits and task-required dependencies within existing policy. Ask for unapproved scope/contract changes, destructive operations, production changes, paid resources, or consequential external actions. Honor existing explicit authorization. Prepare reviewable changes before requesting a decision.
 
