@@ -1,109 +1,69 @@
-# Production Agent OS 🛡️
-> **The Anti-Vibe-Coding Framework for AI Agents.**  
-> Drop-in governance, spec-driven architecture, and terminal guardrails to build production backends with Claude Code and AI agents without breaking your codebase.
+# Production Agent OS
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Engine: Claude Code / Terminal Agents](https://img.shields.io/badge/Agent-Claude%20Code%20%7C%20Codex%20%7C%20Antigravity-orange.svg)](#)
+**Build reliable product backends with AI agents.** A small skill and project workflow for APIs, databases, authentication, workers, and integrations—from a prototype to a backend you can operate.
 
----
+Created from lessons building [DakNode](https://daknode.com). MIT licensed.
 
-## The Problem: Why "Vibe Coding" Breaks Backends
+## What it does
 
-Right now, everyone is talking about "vibe coding"—throwing prompts at an LLM and hoping a production system appears.
+Helps an agent inspect the real codebase, clarify backend contracts, implement a small complete slice, verify failure paths, and preserve evidence and decisions between sessions. It fits existing projects as well as new ones without imposing a framework, queue, database, or cloud provider.
 
-That works fine for a weekend demo or a static landing page. But if you try that on backend infrastructure, it collapses:
-- **Context Rot:** After 20 minutes of chatting, the agent forgets earlier decisions and hallucinates database columns that don't exist.
-- **Silent Degradation:** The AI modifies test assertions just to get a green tick instead of fixing the broken application logic.
-- **Dependency Bloat:** Agents randomly install unvetted third-party packages for simple helper utilities.
-- **Zero Accountability:** When an asynchronous worker silently drops jobs at 2 AM due to an environment mismatch, the AI isn't on call—**you are**.
+The focus is backend engineering. Product context defines what the backend must accomplish; frontend design and general product management are outside the main workflow.
 
-**Production Agent OS** is a lightweight, drop-in governance layer that transforms AI agents from unpredictable vibe coders into disciplined systems engineers operating inside strict architectural boundaries.
+These are written agent instructions, not a security sandbox or automatic enforcement. Production readiness requires evidence from your application and environment.
 
----
+## Install into a project
 
-## The 8-Step Coder Workflow
+Clone this repository to a separate directory, then run:
 
-Every feature built by the agent must strictly follow this closed execution loop:
-
-```mermaid
-flowchart TD
-    A["1. Check TASKS.md<br/>(Confirm next unblocked task)"] --> B["2. Read/Write Spec<br/>(specs/feature.md before code)"]
-    B --> C["3. Implement Minimal Code<br/>(Within schema boundaries)"]
-    C --> D["4. Test & Collect Evidence<br/>(Execute in terminal)"]
-    D --> E{"Tests Green?"}
-    E -- No --> F["Fix Code & Re-test<br/>(Never weaken tests!)"]
-    F --> D
-    E -- Yes --> G["5. Record in TESTING.md<br/>('No Evidence, No Done')"]
-    G --> H["6. Mark Task Done<br/>([x] in TASKS.md)"]
-    H --> I["7. Append to LOG.md<br/>(Token-efficient rolling log)"]
-```
-
----
-
-## What's Inside the Kit
-
-```text
-your-project/
-├── CLAUDE.md                 # Master agent operating manual (loaded automatically)
-└── .agent/
-    ├── architecture.md       # Product boundary, tech stack invariants & DDL rules
-    ├── TASKS.md              # Active task tracker with strict acceptance criteria
-    ├── TESTING.md            # Regression test matrix & terminal evidence log
-    ├── LOG.md                # 2-3 line rolling changelog (saves context tokens)
-    ├── MILESTONES.md         # Release roadmap (v0.1, v0.2, v1.0)
-    ├── PHASES.md             # Micro-phase breakdown of active milestone
-    └── specs/
-        ├── README.md         # "No Spec, No Implementation" guide
-        └── 00_template_spec.md # Feature spec template (Goals, Invariants, Edge Cases)
-```
-
----
-
-## Quickstart (Install in 10 Seconds)
-
-### Option 1: Drop into an existing repository
-Navigate to your project root and run:
 ```bash
-# Clone the kit
-git clone https://github.com/ayushraj61/agent-os-kit.git /tmp/agent-os-kit
-
-# Run the installer pointing to your repo
-bash /tmp/agent-os-kit/install.sh .
-
-# Clean up temporary clone
-rm -rf /tmp/agent-os-kit
+git clone https://github.com/ayushraj61/agent-os-kit.git
+bash agent-os-kit/install.sh /path/to/your-project
 ```
 
-### Option 2: Manual Copy
-Just copy `CLAUDE.md` and the `.agent/` folder from `template/` directly into your repository root.
+The installer adds missing files, preserves all existing files, and rejects conflicting paths and symlinks within template destinations. Re-running it does not update existing copies. Review and merge future workflow improvements deliberately.
 
----
+It supplies `CLAUDE.md` and `AGENTS.md` entry points pointing to `.agent/WORKFLOW.md`. If either file already exists, add that reference yourself. Automatic discovery depends on your agent and configuration; for other tools, explicitly point them to the workflow. No universal agent compatibility is claimed.
 
-## The 3 Golden Rules Enforced by the Kit
+Alternatively, use the root `SKILL.md` as a skill through your agent's supported skill installation mechanism. The references and template directory must remain available beside it. Project installation and skill installation are separate routes; neither requires the other.
 
-### 1. Schema & Specs First
-The agent is strictly forbidden from writing multi-file production code before a markdown specification exists in `.agent/specs/`. You define the database schema, foreign keys, and API contracts. The agent only executes inside those walls.
+## First request
 
-### 2. Tests Are the Immutable Judge
-If an automated test fails, the agent must fix the application code. **It is blocked from modifying test assertions to pass broken code.**
+> Inspect this existing backend and initialize only the relevant Agent OS project state. Preserve my stack and working changes. Then implement [feature], including its access rules and failure behavior, and show what you verified.
 
-### 3. Change Control ("When to Stop and Ask")
-The agent must halt execution and present a 4-part trade-off summary before:
-- Deleting or rewriting pre-existing code.
-- Modifying a database schema where real data exists.
-- Installing new third-party libraries.
+For a new backend, state the core operation, callers, data, and constraints. The agent should resolve blocking unknowns before choosing infrastructure.
 
----
+## The workflow
 
-## Origin Story
+1. Scope behavior and observable acceptance criteria.
+2. Plan significant contract, data, authorization, and failure changes; use a short inline plan for localized fixes.
+3. Build a complete small slice using actual repository interfaces.
+4. Verify relevant success and failure paths.
+5. Record real results and limitations.
+6. Report and update state; mark done only with demonstrated acceptance criteria.
 
-Built out of necessity while building [DakNode](https://daknode.com) (API-first communication infrastructure for AI agents) as a solo backend developer. 
+Routine authorized edits proceed without repeated approvals. Unapproved scope/contract changes, destructive data operations, production mutations, paid resources, and consequential external actions need an explicit decision. Existing authorization remains valid within its scope.
 
-After losing two days to a silent worker container configuration bug that no prompt could magically diagnose, this system was created to bridge the gap between AI generation speed and production reliability.
+## Files
 
----
+| File | Purpose |
+| --- | --- |
+| `SKILL.md` | Skill entry point and routing |
+| `references/backend.md` | API, access, persistence, concurrency, and worker decisions |
+| `references/release.md` | Evidence-based backend release review |
+| `template/.agent/WORKFLOW.md` | Shared installed project instructions |
+| `.agent/architecture.md` | Product boundary, real stack, and decisions |
+| `.agent/TASKS.md`, `TESTING.md`, `LOG.md` | Active work, observed evidence, and concise handoff |
+| `.agent/specs/` | Short backend feature specifications |
+| `.agent/MILESTONES.md`, `PHASES.md` | Optional planning for larger delivery |
 
-## License
+Templates start uninitialized. They contain no executed tests, selected infrastructure, or pre-approved backlog.
 
-MIT License © 2026 Ayush Raj. Free to use, adapt, and build upon.
+## Validation
 
+```bash
+bash -n install.sh
+python3 -m unittest discover -s tests -v
+```
+
+Installer tests cover new projects, repeated installation, existing instructions/state, paths with spaces, and conflicting/symlink destinations. They verify installation behavior; they do not prove that an agent produces reliable backend code. Evaluate real backend changes and release evidence before making that claim.

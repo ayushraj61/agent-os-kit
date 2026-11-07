@@ -1,25 +1,21 @@
-# Spec: [Feature Name]
+# Backend feature: <name>
 
-## 1. Goal
-*A clear 2-3 sentence statement of what this feature accomplishes and why it exists.*
+Status: Draft / approved / implemented / verified (choose with evidence).
 
-## 2. Inputs & Outputs
-- **Inputs:** [e.g. Request payload schema, query parameters, headers]
-- **Outputs:** [e.g. Response JSON structure, database mutation, event emitted]
+## Outcome and scope
+Caller, product operation, current behavior, desired outcome, and non-goals.
 
-## 3. System Invariants & Non-Negotiables
-- **Data Integrity:** [e.g. Never update without tenant scoping: `WHERE org_id = :org_id AND id = :id`]
-- **Concurrency:** [e.g. Atomic increment or optimistic locking required]
-- **Idempotency:** [e.g. Retrying with identical `Idempotency-Key` returns original response without re-executing side effects]
+## Contract and access
+Inputs, outputs, errors, compatibility, authentication, authorization, and data ownership.
 
-## 4. Edge Cases to Handle
-- *Network/DB Timeouts:* How does the system respond if downstream services fail?
-- *Duplicate Payloads:* How are duplicate submissions deduplicated?
-- *Invalid Enums/Types:* Does the parser fail closed with clear 422 errors?
+## Data and execution
+Affected schema/constraints, transaction boundaries, concurrent behavior, migration and deployment compatibility. Include workers/integrations only where relevant.
 
-## 5. Acceptance Criteria
-- [ ] Unit tests cover 100% of happy path logic.
-- [ ] Integration test verifies edge case handling.
-- [ ] Migration downgrade verified (if schema changed).
-- [ ] Evidence recorded in `.agent/TESTING.md`.
+## Failure and recovery
+Timeouts, invalid requests, dependency failures, retry/duplicate semantics, and recovery strategy appropriate to this change.
 
+## Acceptance and verification
+Observable success and denial/failure criteria; relevant unit/integration/manual checks, environment requirements, and evidence links. Record unverified criteria explicitly.
+
+## Rollout and decisions
+Operational signals, rollout/recovery steps if needed, assumptions, trade-offs, and unresolved decisions.

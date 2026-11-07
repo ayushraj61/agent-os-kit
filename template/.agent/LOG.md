@@ -1,11 +1,3 @@
-# Project Rolling Changelog
+# Backend work log
 
-*This document is re-read on session start. Keep entries concise (2-4 lines each) to save context tokens. Record facts, bugs discovered, and superseded decisions.*
-
----
-
-## 2026-11-07
-- **Setup:** Initialized repository with Production Agent OS structure (`CLAUDE.md`, `.agent/architecture.md`, `.agent/TASKS.md`).
-- **Files Created:** Core `.agent` templates.
-- **Next Up:** Task 1.1 Bootstrap database schema.
-
+No project work recorded. Append concise entries with date, task, change, verification reference, and unresolved follow-up. Keep durable decisions in architecture/specs. Read only the last 20 lines on session start.

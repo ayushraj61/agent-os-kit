@@ -1,51 +1,39 @@
 #!/usr/bin/env bash
-# Production Agent OS — Drop-in Installer
-# Installs the .agent/ governance directory and CLAUDE.md instructions into any project.
-
+# Add missing project files without replacing existing files or following target symlinks.
 set -euo pipefail
-
-TARGET_DIR="${1:-.}"
-
-echo "=========================================================="
-echo "  Production Agent OS — Initializing Project Guardrails"
-echo "=========================================================="
-
-if [ ! -d "$TARGET_DIR" ]; then
-    echo "Creating target directory: $TARGET_DIR"
-    mkdir -p "$TARGET_DIR"
+if [ "$#" -gt 1 ]; then
+    echo "Usage: bash install.sh [project-directory]" >&2
+    exit 2
 fi
-
+TARGET_DIR="${1:-.}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMPLATE_DIR="$SCRIPT_DIR/template"
-
-# 1. Copy .agent folder
-if [ -d "$TARGET_DIR/.agent" ]; then
-    echo "[!] .agent/ directory already exists in $TARGET_DIR. Skipping overwrite to protect your specs."
-else
-    echo "[+] Copying .agent/ architecture & spec templates..."
-    cp -r "$TEMPLATE_DIR/.agent" "$TARGET_DIR/"
+if [ -L "$TARGET_DIR" ]; then
+    echo "Refusing a symbolic-link target: $TARGET_DIR" >&2
+    exit 1
 fi
-
-# 2. Copy CLAUDE.md
-if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
-    echo "[!] CLAUDE.md already exists in $TARGET_DIR."
-    echo "    Backing up existing CLAUDE.md to CLAUDE.md.backup"
-    cp "$TARGET_DIR/CLAUDE.md" "$TARGET_DIR/CLAUDE.md.backup"
-    cp "$TEMPLATE_DIR/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
-    echo "[+] Updated CLAUDE.md (original saved as CLAUDE.md.backup)"
-else
-    echo "[+] Installing CLAUDE.md master instructions..."
-    cp "$TEMPLATE_DIR/CLAUDE.md" "$TARGET_DIR/"
-fi
-
-echo ""
-echo "=========================================================="
-echo "  Success! Production Agent OS is installed in: $TARGET_DIR"
-echo "=========================================================="
-echo "Next steps:"
-echo " 1. Edit $TARGET_DIR/.agent/architecture.md to define your tech stack & invariants."
-echo " 2. Add your first task in $TARGET_DIR/.agent/TASKS.md."
-echo " 3. Launch Claude Code / your terminal agent:"
-echo "    $ claude"
-echo "=========================================================="
-
+mkdir -p "$TARGET_DIR"
+TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
+# Preflight all destination paths before writing anything.
+while IFS= read -r source; do
+    relative="${source#"$TEMPLATE_DIR/"}"
+    destination="$TARGET_DIR/$relative"
+    if [ -L "$destination" ] || { [ -e "$destination" ] && [ -d "$source" ] && [ ! -d "$destination" ]; } || { [ -e "$destination" ] && [ -f "$source" ] && [ ! -f "$destination" ]; }; then
+        echo "Conflicting path; no template files installed: $destination" >&2
+        exit 1
+    fi
+done < <(find "$TEMPLATE_DIR" -mindepth 1 -print)
+while IFS= read -r source; do
+    relative="${source#"$TEMPLATE_DIR/"}"
+    destination="$TARGET_DIR/$relative"
+    if [ -d "$source" ]; then
+        mkdir -p "$destination"
+    elif [ -e "$destination" ]; then
+        echo "Preserved: $relative"
+    else
+        cp -n "$source" "$destination"
+        echo "Installed: $relative"
+    fi
+done < <(find "$TEMPLATE_DIR" -mindepth 1 -print)
+echo "Review existing CLAUDE.md / AGENTS.md: if preserved, add a reference to .agent/WORKFLOW.md manually."
+echo "Next: ask your agent to inspect the backend and initialize relevant .agent/ state from your requirements."
