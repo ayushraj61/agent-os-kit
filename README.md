@@ -85,7 +85,9 @@ git clone https://github.com/ayushraj61/agent-os-kit.git
 bash agent-os-kit/install.sh /path/to/your-project
 ```
 
-The installer safely installs `CLAUDE.md`, `AGENTS.md`, and the `.agent/` governance structure into your repository. Existing instruction files and project state are preserved.
+The installer safely installs `CLAUDE.md`, `AGENTS.md`, and the `.agent/` governance structure into your repository. Existing files and project state are preserved.
+
+> **Note for existing projects:** If you already have an existing `CLAUDE.md` or `AGENTS.md`, the installer preserves it rather than overwriting it. Simply add a reference to `Read .agent/WORKFLOW.md` inside your existing file so your agent loads the workflow.
 
 ### Option 2: Use as an Agent Skill
 Point your AI agent directly to `SKILL.md` via your agent's skill loader.
@@ -131,12 +133,12 @@ python3 -m unittest discover -s tests -v
 
 ### 2. Standardized Behavioral Evaluation Scenarios
 In [`evaluations/README.md`](evaluations/README.md), we define 7 repeatable evaluation scenarios to test whether an AI agent demonstrates real engineering judgment:
+- Beginner project scaffolding from plain-language requirements
 - Multi-tenant workspace data isolation under direct ID tampering
 - Duplicate payment callback idempotency & state protection
 - Concurrency race conditions on limited inventory / seat reservations
 - Cookie-based authentication & client CORS boundaries
-- Resilient recovery and reporting under database outages
-- Scoped list and search pagination memory limits
+- Resilient recovery and reporting under unavailable databases
 - Localized maintenance fixes without unnecessary ceremony
 
 ---
