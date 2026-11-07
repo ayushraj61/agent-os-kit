@@ -42,3 +42,4 @@ Format problem presentation when stopping:
 ### 3. Verification & Guardrail Rules
 - **Tests Are Immutable Judges:** If a test fails, the agent must fix the application code. The agent is strictly forbidden from changing test assertions to make broken code pass.
 - **Context Hygiene:** Read only the last 15-20 lines of `LOG.md`; never dump megabytes of files into the context window.
+

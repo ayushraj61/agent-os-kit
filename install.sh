@@ -48,3 +48,4 @@ echo " 2. Add your first task in $TARGET_DIR/.agent/TASKS.md."
 echo " 3. Launch Claude Code / your terminal agent:"
 echo "    $ claude"
 echo "=========================================================="
+

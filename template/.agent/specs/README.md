@@ -7,3 +7,4 @@ Before an AI agent or developer writes production code for any feature touching 
 2. Define the exact **Goal**, **Inputs & Outputs**, **Edge Cases**, and **Invariants**.
 3. Link the spec section in `.agent/TASKS.md`.
 4. Only then begin implementation.
+

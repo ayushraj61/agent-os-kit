@@ -53,3 +53,4 @@
 - **Example — Migration from PostgreSQL Queue to Kafka/RabbitMQ:**
   - *Trigger Condition:* Worker queue latency exceeds 500ms under sustained load (>10,000 tasks/min) or database write IOPS exceed 80% capacity.
   - *Rule:* Do not propose Kafka before this quantitative metric is verified in production logs.
+

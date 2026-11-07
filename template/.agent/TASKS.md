@@ -36,3 +36,4 @@
 - [ ] **Task 3.1: Worker Queue Bootstrap**
   - **Scope:** Configure background queue worker and idempotency wrapper.
   - **Acceptance Criteria:** Tasks process with retries and exponential backoff.
+

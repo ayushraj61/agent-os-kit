@@ -22,3 +22,4 @@
 - [ ] Integration test verifies edge case handling.
 - [ ] Migration downgrade verified (if schema changed).
 - [ ] Evidence recorded in `.agent/TESTING.md`.
+

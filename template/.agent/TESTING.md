@@ -29,3 +29,4 @@ INFO  [alembic.runtime.migration] Running upgrade  -> a1b2c3d4, initial schema
 ```
 
 *(Append new evidence blocks chronologically as tasks complete.)*
+
